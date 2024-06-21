@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: kibana.starsys.fr
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  name: ingress-kibana
+  namespace: elk
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - kibana.starsys.fr
+    secretName: kibana-tls
+  rules:
+  - host: kibana.starsys.fr
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: kibana
+            port:
+              number: 5601
