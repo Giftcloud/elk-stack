@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: heartbeat-config
+  namespace: elk
+data:
+  heartbeat.yml: |
+    heartbeat.monitors:
+    - type: http
+      id: kibana-monitor
+      name: Kibana
+      urls: ["http://kibana:5601"]
+      schedule: '@every 10s'
+      check.response.status: 200
+
+    output.elasticsearch:
+      hosts: ["http://elasticsearch:9200"]

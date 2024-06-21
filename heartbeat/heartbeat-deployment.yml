@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: heartbeat
+  namespace: elk
+  labels:
+    app: heartbeat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: heartbeat
+  template:
+    metadata:
+      labels:
+        app: heartbeat
+    spec:
+      containers:
+      - name: heartbeat
+        image: docker.elastic.co/beats/heartbeat:7.10.1
+        volumeMounts:
+        - name: config-volume
+          mountPath: /usr/share/heartbeat/heartbeat.yml
+          subPath: heartbeat.yml
+        env:
+        - name: ELASTICSEARCH_HOSTS
+          value: "http://elasticsearch:9200"
+      volumes:
+      - name: config-volume
+        configMap:
+          name: heartbeat-config
