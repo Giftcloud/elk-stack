@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: onlyoffice
+  namespace: onlyoffice
+  labels:
+    app: onlyoffice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: onlyoffice
+  template:
+    metadata:
+      namespace: onlyoffice
+      labels:
+        app: onlyoffice
+    spec:
+      containers:
+      - name: onlyoffice
+        image: onlyoffice/documentserver:latest
+        ports:
+        - containerPort: 80

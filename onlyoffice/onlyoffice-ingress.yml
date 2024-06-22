@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: onlyoffice.starsys.fr
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  name: ingress-onlyoffice
+  namespace: onlyoffice
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - onlyoffice.starsys.fr
+    secretName: onlyoffice-tls
+  rules:
+  - host: onlyoffice.starsys.fr
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: onlyoffice
+            port:
+              number: 80
