@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mattermost
+  namespace: mattermost
+  labels:
+    app: mattermost
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mattermost
+  template:
+    metadata:
+      namespace: mattermost
+      labels:
+        app: mattermost
+    spec:
+      containers:
+      - name: mattermost
+        image: mattermost/mattermost-enterprise-edition:latest
+        ports:
+        - containerPort: 8065

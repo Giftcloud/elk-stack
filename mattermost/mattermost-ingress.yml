@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: mattermost.starsys.fr
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  name: ingress-mattermost
+  namespace: mattermost
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - mattermost.starsys.fr
+    secretName: mattermost-tls
+  rules:
+  - host: mattermost.starsys.fr
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mattermost
+            port:
+              number: 8065
