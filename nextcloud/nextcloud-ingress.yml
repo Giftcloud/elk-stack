@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: nextcloud.starsys.fr
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  name: ingress-nextcloud
+  namespace: nextcloud
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - nextcloud.starsys.fr
+    secretName: nextcloud-tls
+  rules:
+  - host: nextcloud.starsys.fr
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nextcloud
+            port:
+              number: 8086
