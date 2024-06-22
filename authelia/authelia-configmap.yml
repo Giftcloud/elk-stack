@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authelia-config
+  namespace: authelia
+data:
+  configuration.yml: |
+    # Authelia configuration file
+    theme: light
+
+    jwt_secret: your_jwt_secret
+
+    default_redirection_url: http://nextcloud.starsys.fr/
+
+    totp:
+      issuer: authelia.com
+      period: 30
+      skew: 1
+
+    storage:
+      local:
+        path: /config/db.sqlite3
+
+    notifier:
+      smtp:
+        username: your_smtp_username
+        password: your_smtp_password
+        host: smtp.your-email-provider.com
+        port: 587
+        sender: authelia@your-email-provider.com
+        secure: false
+
+    authentication_backend:
+      file:
+        path: /config/users_database.yml
+
+    access_control:
+      default_policy: deny
+      rules:
+      - domain: "*.starsys.fr"
+        policy: one_factor
+
+    session:
+      name: authelia_session
+      secret: your_session_secret
+      expiration: 3600
+      inactivity: 300
+      domain: starsys.fr
+
+    regulation:
+      max_retries: 3
+      find_time: 120
+      ban_time: 300
+
+    logs_level: debug
